@@ -58,7 +58,8 @@ library
     import:           warnings
 
     -- Modules exported by the library.
-    exposed-modules:  MyLib
+    exposed-modules:  Lexer
+                    , Parser
 
     -- Modules included in this library but not exported.
     -- other-modules:
@@ -68,6 +69,11 @@ library
 
     -- Other library packages from which modules are imported.
     build-depends:    base ^>=4.17.2.1
+                    , bytestring ^>=0.12.1.0
+                    , text ^>=2.1.1
+                    , process ^>=1.6.25.0
+                    , directory ^>=1.3.9.0
+                    , time ^>=1.14
 
     -- Directories containing source files.
     hs-source-dirs:   src
