@@ -15,14 +15,13 @@ handleArgs = parseArgs <$> Env.getArgs
 
 main :: IO ()
 main =
-    handleArgs >>= displayMessage
-  where
-    displayMessage parsedArgument =
-        case parsedArgument of
-            Left errMessage ->
-                putStrLn $ "Error: " <> errMessage
-            Right fileName ->
-                putStrLn $ "Opening File:" <> fileName
+    handleArgs
+        >>= \fnameOrError ->
+            case fnameOrError of
+                Left err ->
+                    putStrLn $ "Error: " <> err
+                Right fname ->
+                    readFile fname >>= putStrLn
 
 -- Lexer.lexText
 -- Parser.parseText
