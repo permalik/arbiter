@@ -1,8 +1,11 @@
 module Main where
 
+import qualified Control.Exception as Exception
+import GHC.IO.Exception (IOException (IOError))
 import Lexer (lexText)
 import Parser (parseText)
 import qualified System.Environment as Env
+import qualified System.IO.Error as Error
 
 handleArgs :: IO (Either String FilePath)
 handleArgs = parseArgs <$> Env.getArgs
@@ -15,13 +18,19 @@ handleArgs = parseArgs <$> Env.getArgs
 
 main :: IO ()
 main =
-    handleArgs
-        >>= \fnameOrError ->
-            case fnameOrError of
-                Left err ->
-                    putStrLn $ "Error: " <> err
-                Right fname ->
-                    readFile fname >>= putStrLn
+    withErrorHandling $
+        handleArgs
+            >>= \arg ->
+                case arg of
+                    Left err ->
+                        putStrLn $ "Error processing file: " <> err
+                    Right fname ->
+                        readFile fname >>= putStrLn
+  where
+    withErrorHandling :: IO () -> IO ()
+    withErrorHandling ioAction = Exception.catch ioAction handleErr
+    handleErr :: IOError -> IO ()
+    handleErr e = putStrLn "Error reading file: " >> print e
 
 -- Lexer.lexText
 -- Parser.parseText
