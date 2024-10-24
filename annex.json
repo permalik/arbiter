@@ -1,0 +1,11 @@
+{
+    "file": "go",
+    "src": "Teiva Harsanyi",
+    "mat": "100 Go Mistakes and How to Avoid Them",
+    "tags": [
+        "programming",
+        "architecture",
+        "style"
+    ],
+    "content": "Beware not to harm a codebase with needless complexity."
+}
