@@ -107,10 +107,10 @@ pub fn tokenize(file_contents: &str) -> Vec<Token> {
             '\n' => {
                 let newline = literals::NEWLINE;
                 if let Tokens::Newline(ref newline_literal) = newline {
-                    assert_eq!(newline_literal, &"  ");
+                    assert_eq!(newline_literal, &"\n");
                     tokens.push({
                         Token {
-                            kind: Tokens::Newline("  "),
+                            kind: Tokens::Newline("\n"),
                             value: newline_literal.to_string(),
                             position: i,
                         }
