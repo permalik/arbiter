@@ -1,3 +1,6 @@
+mod lexer;
+
+use lexer::lex;
 use std::env;
 use std::error::Error;
 use std::fs;
@@ -7,7 +10,7 @@ fn main() {
     let file_path = parse_args(&args);
 
     match read_file(file_path) {
-        Ok(file_contents) => println!("{file_contents}"),
+        Ok(file_contents) => lex::tokenize(file_contents),
         Err(e) => eprintln!("error: {e}"),
     }
 }
