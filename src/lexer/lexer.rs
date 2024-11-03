@@ -19,6 +19,20 @@ pub fn tokenize(file_contents: &str) -> Vec<Token> {
     let mut tokens: Vec<Token> = Vec::new();
     for (i, c) in file_contents.chars().enumerate() {
         match c {
+            '#' => {
+                let heading_one = literals::HEADING_ONE;
+                if let Tokens::HeadingOne(ref heading_one_literal) = heading_one {
+                    println!("{:?}", heading_one_literal);
+                    assert_eq!(heading_one_literal, &"#");
+                    tokens.push({
+                        Token {
+                            kind: Tokens::HeadingOne("#"),
+                            value: heading_one_literal.to_string(),
+                            position: i,
+                        }
+                    });
+                }
+            }
             ' ' => {
                 let space = literals::SPACE;
                 if let Tokens::Space(ref space_literal) = space {
