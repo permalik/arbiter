@@ -4,15 +4,11 @@ use std::fs;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let file_path_ref = parse_args(&args);
-    let file_path: Option<String> = file_path_ref.map(str::to_string);
+    let file_path = parse_args(&args);
 
-    match file_path {
-        Some(path) => match fs::read_to_string(&path) {
-            Ok(file_contents) => println!("{file_contents}"),
-            Err(e) => eprintln!("failed to read file: {e}"),
-        },
-        None => eprintln!("usage: cargo run -- file_path.md"),
+    match read_file(file_path) {
+        Ok(file_contents) => println!("{file_contents}"),
+        Err(e) => eprintln!("error: {e}"),
     }
 }
 
@@ -24,7 +20,9 @@ fn parse_args(args: &[String]) -> Option<&str> {
     }
 }
 
-fn read_file(file_path: Option<String>) -> Result<String, Box<(dyn Error + 'static)>> {
-    let file_contents = fs::read_to_string(&file_path)?;
-    Ok(file_contents)
+fn read_file(file_path: Option<&str>) -> Result<String, Box<dyn Error>> {
+    match file_path {
+        Some(path) => fs::read_to_string(path).map_err(|e| e.into()),
+        None => Err("no file path provided".into()),
+    }
 }
