@@ -1,3 +1,4 @@
+mod elements;
 mod lexer;
 
 use lexer::lex;
