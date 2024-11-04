@@ -92,20 +92,39 @@ pub fn tokenize(file_contents: &str) -> Vec<Token> {
                 let mut is_line_break = false;
                 let mut line_break_position = 1;
 
-                while &&file_contents.chars().nth(i + line_break_position) == Some(' ') {
+                while line_break_position < 3
+                    && file_contents.chars().nth(i + line_break_position) == Some(' ')
+                {
                     line_break_position += 1;
+                    if line_break_position == 3 {
+                        is_line_break = true;
+                    }
                 }
 
-                let newline = literals::NEWLINE;
-                if let Tokens::Newline(ref newline_literal) = newline {
-                    assert_eq!(newline_literal, &"\n");
-                    tokens.push({
-                        Token {
-                            kind: Tokens::Newline("\n"),
-                            value: newline_literal.to_string(),
-                            position: i,
-                        }
-                    });
+                if is_line_break {
+                    let line_break = literals::LINE_BREAK;
+                    if let Tokens::LineBreak(ref line_break_literal) = line_break {
+                        assert_eq!(line_break_literal, &"  \n");
+                        tokens.push({
+                            Token {
+                                kind: Tokens::LineBreak("  \n"),
+                                value: line_break_literal.to_string(),
+                                position: i,
+                            }
+                        })
+                    }
+                } else {
+                    let newline = literals::NEWLINE;
+                    if let Tokens::Newline(ref newline_literal) = newline {
+                        assert_eq!(newline_literal, &"\n");
+                        tokens.push({
+                            Token {
+                                kind: Tokens::Newline("\n"),
+                                value: newline_literal.to_string(),
+                                position: i,
+                            }
+                        });
+                    }
                 }
                 i += 1;
             }
