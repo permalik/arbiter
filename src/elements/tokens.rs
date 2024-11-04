@@ -7,5 +7,6 @@ pub enum Tokens {
     HeadingFive(&'static str),
     HeadingSix(&'static str),
     Newline(&'static str),
+    LineBreak(&'static str),
     Space(&'static str),
 }

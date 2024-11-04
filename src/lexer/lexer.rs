@@ -25,13 +25,11 @@ pub fn tokenize(file_contents: &str) -> Vec<Token> {
         match c {
             '#' => {
                 let mut heading_level = 1;
-                assert!(heading_level <= 6, "assert: heading_level exceeds 6");
 
                 while i + heading_level < file_contents.len()
                     && file_contents.chars().nth(i + heading_level) == Some('#')
                 {
                     heading_level += 1;
-                    assert!(heading_level <= 6, "assert: heading_level exceeds 6");
                 }
 
                 if heading_level <= 6 {
@@ -90,6 +88,27 @@ pub fn tokenize(file_contents: &str) -> Vec<Token> {
                 i += heading_level;
                 continue;
             }
+            '\n' => {
+                let mut is_line_break = false;
+                let mut line_break_position = 1;
+
+                while &&file_contents.chars().nth(i + line_break_position) == Some(' ') {
+                    line_break_position += 1;
+                }
+
+                let newline = literals::NEWLINE;
+                if let Tokens::Newline(ref newline_literal) = newline {
+                    assert_eq!(newline_literal, &"\n");
+                    tokens.push({
+                        Token {
+                            kind: Tokens::Newline("\n"),
+                            value: newline_literal.to_string(),
+                            position: i,
+                        }
+                    });
+                }
+                i += 1;
+            }
             ' ' => {
                 let space = literals::SPACE;
                 if let Tokens::Space(ref space_literal) = space {
@@ -98,20 +117,6 @@ pub fn tokenize(file_contents: &str) -> Vec<Token> {
                         Token {
                             kind: Tokens::Space(" "),
                             value: space_literal.to_string(),
-                            position: i,
-                        }
-                    });
-                }
-                i += 1;
-            }
-            '\n' => {
-                let newline = literals::NEWLINE;
-                if let Tokens::Newline(ref newline_literal) = newline {
-                    assert_eq!(newline_literal, &"\n");
-                    tokens.push({
-                        Token {
-                            kind: Tokens::Newline("\n"),
-                            value: newline_literal.to_string(),
                             position: i,
                         }
                     });
