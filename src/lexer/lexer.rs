@@ -9,10 +9,11 @@ pub struct Token {
 
 pub fn parse(line: &str) {
     for token in lex(line) {
-        println!(
-            "Token: name: {:?}, kind: {:?}, value: {:?}, position: {:?}",
-            token.name, token.kind, token.value, token.position
-        );
+        println!("Token: name: ");
+        //println!(
+        //    "Token: name: {:?}, kind: {:?}, value: {:?}, position: {:?}",
+        //    token.name, token.kind, token.value, token.position
+        //);
     }
 }
 
@@ -89,63 +90,63 @@ pub fn lex(line: &str) -> Vec<Token> {
                 i += heading_level;
                 continue;
             }
-            '\n' => {
-                let mut is_line_break = false;
-                let mut line_break_position = 1;
-
-                while line_break_position < 3
-                    && line.chars().nth(i + line_break_position) == Some(' ')
-                {
-                    line_break_position += 1;
-                    if line_break_position == 3 {
-                        is_line_break = true;
-                    }
-                }
-
-                if is_line_break {
-                    let line_break = literals::LINE_BREAK;
-                    if let Tokens::LineBreak(ref line_break_literal) = line_break {
-                        assert_eq!(line_break_literal, &"  \n");
-                        tokens.push({
-                            Token {
-                                name: "line_break".to_string(),
-                                kind: Tokens::LineBreak("  \n"),
-                                value: line_break_literal.to_string(),
-                                position: i,
-                            }
-                        })
-                    }
-                } else {
-                    let newline = literals::NEWLINE;
-                    if let Tokens::Newline(ref newline_literal) = newline {
-                        assert_eq!(newline_literal, &"\n");
-                        tokens.push({
-                            Token {
-                                name: "newline".to_string(),
-                                kind: Tokens::Newline("\n"),
-                                value: newline_literal.to_string(),
-                                position: i,
-                            }
-                        });
-                    }
-                }
-                i += 1;
-            }
-            ' ' => {
-                let space = literals::SPACE;
-                if let Tokens::Space(ref space_literal) = space {
-                    assert_eq!(space_literal, &" ");
-                    tokens.push({
-                        Token {
-                            name: "space".to_string(),
-                            kind: Tokens::Space(" "),
-                            value: space_literal.to_string(),
-                            position: i,
-                        }
-                    });
-                }
-                i += 1;
-            }
+            //'\n' => {
+            //    let mut is_line_break = false;
+            //    let mut line_break_position = 1;
+            //
+            //    while line_break_position < 3
+            //        && line.chars().nth(i + line_break_position) == Some(' ')
+            //    {
+            //        line_break_position += 1;
+            //        if line_break_position == 3 {
+            //            is_line_break = true;
+            //        }
+            //    }
+            //
+            //    if is_line_break {
+            //        let line_break = literals::LINE_BREAK;
+            //        if let Tokens::LineBreak(ref line_break_literal) = line_break {
+            //            assert_eq!(line_break_literal, &"  \n");
+            //            tokens.push({
+            //                Token {
+            //                    name: "line_break".to_string(),
+            //                    kind: Tokens::LineBreak("  \n"),
+            //                    value: line_break_literal.to_string(),
+            //                    position: i,
+            //                }
+            //            })
+            //        }
+            //    } else {
+            //        let newline = literals::NEWLINE;
+            //        if let Tokens::Newline(ref newline_literal) = newline {
+            //            assert_eq!(newline_literal, &"\n");
+            //            tokens.push({
+            //                Token {
+            //                    name: "newline".to_string(),
+            //                    kind: Tokens::Newline("\n"),
+            //                    value: newline_literal.to_string(),
+            //                    position: i,
+            //                }
+            //            });
+            //        }
+            //    }
+            //    i += 1;
+            //}
+            //' ' => {
+            //    let space = literals::SPACE;
+            //    if let Tokens::Space(ref space_literal) = space {
+            //        assert_eq!(space_literal, &" ");
+            //        tokens.push({
+            //            Token {
+            //                name: "space".to_string(),
+            //                kind: Tokens::Space(" "),
+            //                value: space_literal.to_string(),
+            //                position: i,
+            //            }
+            //        });
+            //    }
+            //    i += 1;
+            //}
             _ => {
                 i += 1;
             }
