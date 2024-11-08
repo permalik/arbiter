@@ -1,6 +1,7 @@
 use crate::elements::{literals, tokens::Tokens};
 
 pub struct Token {
+    name: String,
     kind: Tokens,
     value: String,
     position: usize,
@@ -9,8 +10,8 @@ pub struct Token {
 pub fn parse(line: &str) {
     for token in lex(line) {
         println!(
-            "Token: kind: {:?}, value: {:?}, position: {:?}",
-            token.kind, token.value, token.position
+            "Token: name: {:?}, kind: {:?}, value: {:?}, position: {:?}",
+            token.name, token.kind, token.value, token.position
         );
     }
 }
@@ -20,7 +21,6 @@ pub fn lex(line: &str) -> Vec<Token> {
     let mut i = 0;
 
     while i < line.len() {
-        assert!(i < line.len(), "assert: index oob");
         let c = line.chars().nth(i).unwrap();
         match c {
             '#' => {
@@ -80,6 +80,7 @@ pub fn lex(line: &str) -> Vec<Token> {
                     };
 
                     tokens.push(Token {
+                        name: format!("h{}", heading_level.to_string().as_str()),
                         kind: token_kind,
                         value: format!("{}", "#".repeat(heading_level)),
                         position: i,
@@ -107,6 +108,7 @@ pub fn lex(line: &str) -> Vec<Token> {
                         assert_eq!(line_break_literal, &"  \n");
                         tokens.push({
                             Token {
+                                name: "line_break".to_string(),
                                 kind: Tokens::LineBreak("  \n"),
                                 value: line_break_literal.to_string(),
                                 position: i,
@@ -119,6 +121,7 @@ pub fn lex(line: &str) -> Vec<Token> {
                         assert_eq!(newline_literal, &"\n");
                         tokens.push({
                             Token {
+                                name: "newline".to_string(),
                                 kind: Tokens::Newline("\n"),
                                 value: newline_literal.to_string(),
                                 position: i,
@@ -134,6 +137,7 @@ pub fn lex(line: &str) -> Vec<Token> {
                     assert_eq!(space_literal, &" ");
                     tokens.push({
                         Token {
+                            name: "space".to_string(),
                             kind: Tokens::Space(" "),
                             value: space_literal.to_string(),
                             position: i,
