@@ -38,7 +38,7 @@ pub fn lex(line: &str) -> Vec<Token> {
                     }
 
                     if heading_level <= 6 {
-                        let (_heading_literal, token_kind) = match heading_level {
+                        let token_kind = match heading_level {
                             1 => {
                                 let heading_one = literals::HEADING_ONE;
                                 if let Tokens::HeadingOne(heading_one_literal) = heading_one {
@@ -47,7 +47,7 @@ pub fn lex(line: &str) -> Vec<Token> {
                                         format!("{} ", &"#".repeat(heading_level))
                                     );
                                 }
-                                (heading_one, Tokens::HeadingOne("# "))
+                                Tokens::HeadingOne("# ")
                             }
                             2 => {
                                 let heading_two = literals::HEADING_TWO;
@@ -57,7 +57,7 @@ pub fn lex(line: &str) -> Vec<Token> {
                                         format!("{} ", &"#".repeat(heading_level))
                                     );
                                 }
-                                (heading_two, Tokens::HeadingTwo("## "))
+                                Tokens::HeadingTwo("## ")
                             }
                             3 => {
                                 let heading_three = literals::HEADING_THREE;
@@ -67,7 +67,7 @@ pub fn lex(line: &str) -> Vec<Token> {
                                         format!("{} ", &"#".repeat(heading_level))
                                     );
                                 }
-                                (heading_three, Tokens::HeadingThree("### "))
+                                Tokens::HeadingThree("### ")
                             }
                             4 => {
                                 let heading_four = literals::HEADING_FOUR;
@@ -77,7 +77,7 @@ pub fn lex(line: &str) -> Vec<Token> {
                                         format!("{} ", &"#".repeat(heading_level))
                                     );
                                 }
-                                (heading_four, Tokens::HeadingFour("#### "))
+                                Tokens::HeadingFour("#### ")
                             }
                             5 => {
                                 let heading_five = literals::HEADING_FIVE;
@@ -87,7 +87,7 @@ pub fn lex(line: &str) -> Vec<Token> {
                                         format!("{} ", &"#".repeat(heading_level))
                                     );
                                 }
-                                (heading_five, Tokens::HeadingFive("##### "))
+                                Tokens::HeadingFive("##### ")
                             }
                             6 => {
                                 let heading_six = literals::HEADING_SIX;
@@ -97,15 +97,18 @@ pub fn lex(line: &str) -> Vec<Token> {
                                         format!("{} ", &"#".repeat(heading_level))
                                     );
                                 }
-                                (heading_six, Tokens::HeadingSix("###### "))
+                                Tokens::HeadingSix("###### ")
                             }
                             _ => unreachable!(),
                         };
 
+                        let line_text = String::from(line);
+                        let heading_text = &line_text[(heading_level + 1)..line_text.len()];
+
                         tokens.push(Token {
                             name: format!("h{}", heading_level),
                             kind: token_kind,
-                            value: format!("{}", "#".repeat(heading_level)),
+                            value: format!("{} {}", "#".repeat(heading_level), heading_text),
                             position: i,
                         });
                     }
