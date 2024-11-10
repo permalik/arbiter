@@ -2,13 +2,10 @@ mod elements;
 mod lexer;
 
 use lexer::lexer::parse;
-//use std::error::Error;
-//use std::fs::File;
+use std::env;
 use std::fs::File;
 use std::io::{self, BufRead, BufReader};
 use std::path::Path;
-//use std::{env, io};
-use std::env;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -24,13 +21,6 @@ fn main() {
         }
         None => panic!("no file path provided"),
     }
-    //match read_file(file_path) {
-    //    Ok(file_contents) => {
-    //        let file_contents_str: &str = &file_contents;
-    //        parse(file_contents_str);
-    //    }
-    //    Err(e) => eprintln!("error: {e}"),
-    //}
 }
 
 fn parse_args(args: &[String]) -> Option<&str> {

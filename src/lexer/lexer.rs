@@ -42,8 +42,8 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
         }
         Some(c) => match c {
             '#' => {
-                let mut heading_level = 1;
                 let heading_index = 0;
+                let mut heading_level = 1;
 
                 while heading_index + heading_level < line.len()
                     && line.chars().nth(heading_index + heading_level) == Some('#')
@@ -128,22 +128,49 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                 }
             }
             '-' => {
-                let unordered_list_hyphen = literals::UNORDERED_LIST_HYPHEN;
-                if let Tokens::UnorderedListHyphen(unordered_list_hyphen_literal) =
-                    unordered_list_hyphen
+                let hyphen_index = 0;
+                let mut horizontal_rule_hyphen_level = 0;
+                while hyphen_index < line.len()
+                    && line
+                        .chars()
+                        .nth(hyphen_index + horizontal_rule_hyphen_level)
+                        == Some('-')
                 {
-                    assert_eq!(unordered_list_hyphen_literal, "- ");
+                    horizontal_rule_hyphen_level += 1;
                 }
 
-                let line_text = String::from(line);
-                let unordered_list_text = &line_text[2..line_text.len()];
+                if horizontal_rule_hyphen_level == 3 && line.len() == 3 {
+                    let horizontal_rule_hyphen = literals::HORIZONTAL_RULE_HYPHEN;
+                    if let Tokens::HorizontalRuleHyphen(horizontal_rule_hyphen_literal) =
+                        horizontal_rule_hyphen
+                    {
+                        assert_eq!(horizontal_rule_hyphen_literal, "---");
+                    }
 
-                tokens.push(Token {
-                    line_number,
-                    name: "unordered_list_hyphen".to_string(),
-                    kind: Tokens::UnorderedListHyphen("- "),
-                    value: format!("{}{}", "- ".to_string(), unordered_list_text),
-                });
+                    tokens.push(Token {
+                        line_number,
+                        name: "horizontal_rule_hyphen".to_string(),
+                        kind: Tokens::HorizontalRuleHyphen("---"),
+                        value: format!("---"),
+                    });
+                } else {
+                    let unordered_list_hyphen = literals::UNORDERED_LIST_HYPHEN;
+                    if let Tokens::UnorderedListHyphen(unordered_list_hyphen_literal) =
+                        unordered_list_hyphen
+                    {
+                        assert_eq!(unordered_list_hyphen_literal, "- ");
+                    }
+
+                    let line_text = String::from(line);
+                    let unordered_list_text = &line_text[2..line_text.len()];
+
+                    tokens.push(Token {
+                        line_number,
+                        name: "unordered_list_hyphen".to_string(),
+                        kind: Tokens::UnorderedListHyphen("- "),
+                        value: format!("{}{}", "- ".to_string(), unordered_list_text),
+                    });
+                }
             }
             _ => {
                 tokens.push(Token {
