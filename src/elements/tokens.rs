@@ -8,6 +8,7 @@ pub enum Tokens {
     HeadingSix(&'static str),
     UnorderedListHyphen(&'static str),
     HorizontalRuleHyphen(&'static str),
+    HorizontalRuleAsterisk(&'static str),
     EmptyLine(&'static str),
     //LineBreak(&'static str),
     Text(String),

@@ -42,12 +42,9 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
         }
         Some(c) => match c {
             '#' => {
-                let heading_index = 0;
                 let mut heading_level = 1;
 
-                while heading_index + heading_level < line.len()
-                    && line.chars().nth(heading_index + heading_level) == Some('#')
-                {
+                while heading_level < line.len() && line.chars().nth(heading_level) == Some('#') {
                     heading_level += 1;
                 }
 
@@ -169,6 +166,30 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                         name: "unordered_list_hyphen".to_string(),
                         kind: Tokens::UnorderedListHyphen("- "),
                         value: format!("{}{}", "- ".to_string(), unordered_list_text),
+                    });
+                }
+            }
+            '*' => {
+                let mut horizontal_rule_asterisk_level = 0;
+                while horizontal_rule_asterisk_level < line.len()
+                    && line.chars().nth(horizontal_rule_asterisk_level) == Some('*')
+                {
+                    horizontal_rule_asterisk_level += 1;
+                }
+
+                if horizontal_rule_asterisk_level == 3 && line.len() == 3 {
+                    let horizontal_rule_asterisk = literals::HORIZONTAL_RULE_ASTERISK;
+                    if let Tokens::HorizontalRuleAsterisk(horizontal_rule_asterisk_literal) =
+                        horizontal_rule_asterisk
+                    {
+                        assert_eq!(horizontal_rule_asterisk_literal, "***");
+                    }
+
+                    tokens.push(Token {
+                        line_number,
+                        name: "horizontal_rule_asterisk".to_string(),
+                        kind: Tokens::HorizontalRuleAsterisk("***"),
+                        value: format!("***"),
                     });
                 }
             }
