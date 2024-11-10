@@ -28,9 +28,9 @@ pub fn parse(line_number: usize, line: &str) {
 pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
     match line.chars().nth(0) {
         None => {
-            let empty_line = literals::EMPTY_LINE;
-            if let Tokens::EmptyLine(empty_line_literal) = empty_line {
-                assert_eq!(empty_line_literal, "");
+            let empty_line_literal = literals::EMPTY_LINE;
+            if let Tokens::EmptyLine(empty_line) = empty_line_literal {
+                assert_eq!(empty_line, "");
             }
 
             tokens.push(Token {
@@ -51,62 +51,53 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                 if heading_level <= 6 {
                     let token_kind = match heading_level {
                         1 => {
-                            let heading_one = literals::HEADING_ONE;
-                            if let Tokens::HeadingOne(heading_one_literal) = heading_one {
-                                assert_eq!(
-                                    heading_one_literal,
-                                    format!("{} ", &"#".repeat(heading_level))
-                                );
+                            let heading_one_literal = literals::HEADING_ONE;
+                            if let Tokens::HeadingOne(heading_one) = heading_one_literal {
+                                assert_eq!(heading_one, format!("{} ", &"#".repeat(heading_level)));
                             }
                             Tokens::HeadingOne("# ")
                         }
                         2 => {
-                            let heading_two = literals::HEADING_TWO;
-                            if let Tokens::HeadingTwo(heading_two_literal) = heading_two {
-                                assert_eq!(
-                                    heading_two_literal,
-                                    format!("{} ", &"#".repeat(heading_level))
-                                );
+                            let heading_two_literal = literals::HEADING_TWO;
+                            if let Tokens::HeadingTwo(heading_two) = heading_two_literal {
+                                assert_eq!(heading_two, format!("{} ", &"#".repeat(heading_level)));
                             }
                             Tokens::HeadingTwo("## ")
                         }
                         3 => {
-                            let heading_three = literals::HEADING_THREE;
-                            if let Tokens::HeadingThree(heading_three_literal) = heading_three {
+                            let heading_three_literal = literals::HEADING_THREE;
+                            if let Tokens::HeadingThree(heading_three) = heading_three_literal {
                                 assert_eq!(
-                                    heading_three_literal,
+                                    heading_three,
                                     format!("{} ", &"#".repeat(heading_level))
                                 );
                             }
                             Tokens::HeadingThree("### ")
                         }
                         4 => {
-                            let heading_four = literals::HEADING_FOUR;
-                            if let Tokens::HeadingFour(heading_four_literal) = heading_four {
+                            let heading_four_literal = literals::HEADING_FOUR;
+                            if let Tokens::HeadingFour(heading_four) = heading_four_literal {
                                 assert_eq!(
-                                    heading_four_literal,
+                                    heading_four,
                                     format!("{} ", &"#".repeat(heading_level))
                                 );
                             }
                             Tokens::HeadingFour("#### ")
                         }
                         5 => {
-                            let heading_five = literals::HEADING_FIVE;
-                            if let Tokens::HeadingFive(heading_five_literal) = heading_five {
+                            let heading_five_literal = literals::HEADING_FIVE;
+                            if let Tokens::HeadingFive(heading_five) = heading_five_literal {
                                 assert_eq!(
-                                    heading_five_literal,
+                                    heading_five,
                                     format!("{} ", &"#".repeat(heading_level))
                                 );
                             }
                             Tokens::HeadingFive("##### ")
                         }
                         6 => {
-                            let heading_six = literals::HEADING_SIX;
-                            if let Tokens::HeadingSix(heading_six_literal) = heading_six {
-                                assert_eq!(
-                                    heading_six_literal,
-                                    format!("{} ", &"#".repeat(heading_level))
-                                );
+                            let heading_six_literal = literals::HEADING_SIX;
+                            if let Tokens::HeadingSix(heading_six) = heading_six_literal {
+                                assert_eq!(heading_six, format!("{} ", &"#".repeat(heading_level)));
                             }
                             Tokens::HeadingSix("###### ")
                         }
@@ -125,23 +116,19 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                 }
             }
             '-' => {
-                let hyphen_index = 0;
                 let mut horizontal_rule_hyphen_level = 0;
-                while hyphen_index < line.len()
-                    && line
-                        .chars()
-                        .nth(hyphen_index + horizontal_rule_hyphen_level)
-                        == Some('-')
+                while horizontal_rule_hyphen_level < line.len()
+                    && line.chars().nth(horizontal_rule_hyphen_level) == Some('-')
                 {
                     horizontal_rule_hyphen_level += 1;
                 }
 
                 if horizontal_rule_hyphen_level == 3 && line.len() == 3 {
-                    let horizontal_rule_hyphen = literals::HORIZONTAL_RULE_HYPHEN;
-                    if let Tokens::HorizontalRuleHyphen(horizontal_rule_hyphen_literal) =
-                        horizontal_rule_hyphen
+                    let horizontal_rule_hyphen_literal = literals::HORIZONTAL_RULE_HYPHEN;
+                    if let Tokens::HorizontalRuleHyphen(horizontal_rule_hyphen) =
+                        horizontal_rule_hyphen_literal
                     {
-                        assert_eq!(horizontal_rule_hyphen_literal, "---");
+                        assert_eq!(horizontal_rule_hyphen, "---");
                     }
 
                     tokens.push(Token {
@@ -151,11 +138,11 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                         value: format!("---"),
                     });
                 } else {
-                    let unordered_list_hyphen = literals::UNORDERED_LIST_HYPHEN;
-                    if let Tokens::UnorderedListHyphen(unordered_list_hyphen_literal) =
-                        unordered_list_hyphen
+                    let unordered_list_hyphen_literal = literals::UNORDERED_LIST_HYPHEN;
+                    if let Tokens::UnorderedListHyphen(unordered_list_hyphen) =
+                        unordered_list_hyphen_literal
                     {
-                        assert_eq!(unordered_list_hyphen_literal, "- ");
+                        assert_eq!(unordered_list_hyphen, "- ");
                     }
 
                     let line_text = String::from(line);
@@ -178,11 +165,11 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                 }
 
                 if horizontal_rule_asterisk_level == 3 && line.len() == 3 {
-                    let horizontal_rule_asterisk = literals::HORIZONTAL_RULE_ASTERISK;
-                    if let Tokens::HorizontalRuleAsterisk(horizontal_rule_asterisk_literal) =
-                        horizontal_rule_asterisk
+                    let horizontal_rule_asterisk_literal = literals::HORIZONTAL_RULE_ASTERISK;
+                    if let Tokens::HorizontalRuleAsterisk(horizontal_rule_asterisk) =
+                        horizontal_rule_asterisk_literal
                     {
-                        assert_eq!(horizontal_rule_asterisk_literal, "***");
+                        assert_eq!(horizontal_rule_asterisk, "***");
                     }
 
                     tokens.push(Token {
