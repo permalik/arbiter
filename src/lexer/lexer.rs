@@ -193,6 +193,29 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                     });
                 }
             }
+            '_' => {
+                let mut horizontal_rule_underscore_level = 0;
+                while horizontal_rule_underscore_level < line.len()
+                    && line.chars().nth(horizontal_rule_underscore_level) == Some('_')
+                {
+                    horizontal_rule_underscore_level += 1;
+                }
+                if horizontal_rule_underscore_level == 3 && line.len() == 3 {
+                    let horizontal_rule_underscore_literal = literals::HORIZONTAL_RULE_UNDERSCORE;
+                    if let Tokens::HorizontalRuleUnderscore(horizontal_rule_underscore) =
+                        horizontal_rule_underscore_literal
+                    {
+                        assert_eq!(horizontal_rule_underscore, "___");
+                    }
+
+                    tokens.push(Token {
+                        line_number,
+                        name: "horizontal_rule_underscore".to_string(),
+                        kind: Tokens::HorizontalRuleUnderscore("___"),
+                        value: format!("___"),
+                    });
+                }
+            }
             _ => {
                 tokens.push(Token {
                     line_number,

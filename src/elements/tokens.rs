@@ -9,6 +9,7 @@ pub enum Tokens {
     UnorderedListHyphen(&'static str),
     HorizontalRuleHyphen(&'static str),
     HorizontalRuleAsterisk(&'static str),
+    HorizontalRuleUnderscore(&'static str),
     EmptyLine(&'static str),
     //LineBreak(&'static str),
     Text(String),
