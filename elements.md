@@ -6,7 +6,7 @@
 - [ ] Ordered Lists (1., 2., etc., at the start of a line)
 - [ ] Blockquotes (>)
 - [ ] Code Blocks (triple backticks ```` or four-space indentation)
-- [ ] Horizontal Rules (---, ***, or ___)
+- [x] Horizontal Rules (---, ***, or ___)
 - [ ] Tables (using | for columns in a table row)
 - [ ] Footnotes (e.g., [^1]: Definition text)
 - [ ] Definition Lists (e.g., Term, followed by a new line : Definition)

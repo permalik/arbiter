@@ -203,6 +203,22 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                     });
                 }
             }
+            '>' => {
+                let blockquote_level = 0;
+                if line.chars().nth(blockquote_level + 1) == Some(' ') {
+                    let blockquote_literal = literals::BLOCKQUOTE;
+                    if let Tokens::Blockquote(blockquote) = blockquote_literal {
+                        assert_eq!(blockquote, "> ");
+                    }
+
+                    tokens.push(Token {
+                        line_number,
+                        name: "blockquote".to_string(),
+                        kind: Tokens::Blockquote("> "),
+                        value: format!("> "),
+                    });
+                }
+            }
             _ => {
                 tokens.push(Token {
                     line_number,

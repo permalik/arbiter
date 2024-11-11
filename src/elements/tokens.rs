@@ -10,6 +10,7 @@ pub enum Tokens {
     HorizontalRuleHyphen(&'static str),
     HorizontalRuleAsterisk(&'static str),
     HorizontalRuleUnderscore(&'static str),
+    Blockquote(&'static str),
     EmptyLine(&'static str),
     //LineBreak(&'static str),
     Text(String),
