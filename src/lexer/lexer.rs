@@ -137,24 +137,65 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                         kind: Tokens::HorizontalRuleHyphen("---"),
                         value: format!("---"),
                     });
-                } else {
-                    let unordered_list_hyphen_literal = literals::UNORDERED_LIST_HYPHEN;
-                    if let Tokens::UnorderedListHyphen(unordered_list_hyphen) =
-                        unordered_list_hyphen_literal
-                    {
-                        assert_eq!(unordered_list_hyphen, "- ");
+                    return;
+                }
+                // - [ ]
+                let mut tasklist_index = 0;
+                let mut is_tasklist = false;
+                if line.chars().nth(tasklist_index) == Some('-') {
+                    tasklist_index += 1;
+                    if line.chars().nth(tasklist_index) == Some(' ') {
+                        tasklist_index += 1;
+                        if line.chars().nth(tasklist_index) == Some('[') {
+                            tasklist_index += 1;
+                            if line.chars().nth(tasklist_index) == Some(' ') {
+                                tasklist_index += 1;
+                                if line.chars().nth(tasklist_index) == Some(']') {
+                                    tasklist_index += 1;
+                                    if line.chars().nth(tasklist_index) == Some(' ') {
+                                        is_tasklist = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if is_tasklist {
+                    let tasklist_literal = literals::TASKLIST;
+                    if let Tokens::Tasklist(tasklist) = tasklist_literal {
+                        assert_eq!(tasklist, "- [ ] ");
                     }
 
                     let line_text = String::from(line);
-                    let unordered_list_text = &line_text[2..line_text.len()];
+                    let tasklist_text = &line_text[6..line_text.len()];
 
                     tokens.push(Token {
                         line_number,
-                        name: "unordered_list_hyphen".to_string(),
-                        kind: Tokens::UnorderedListHyphen("- "),
-                        value: format!("{}{}", "- ".to_string(), unordered_list_text),
+                        name: "tasklist".to_string(),
+                        kind: Tokens::Tasklist("- [ ] "),
+                        value: format!("{}{}", "- [ ] ".to_string(), tasklist_text),
                     });
+                    return;
                 }
+
+                let unordered_list_hyphen_literal = literals::UNORDERED_LIST_HYPHEN;
+                if let Tokens::UnorderedListHyphen(unordered_list_hyphen) =
+                    unordered_list_hyphen_literal
+                {
+                    assert_eq!(unordered_list_hyphen, "- ");
+                }
+
+                let line_text = String::from(line);
+                let unordered_list_text = &line_text[2..line_text.len()];
+
+                tokens.push(Token {
+                    line_number,
+                    name: "unordered_list_hyphen".to_string(),
+                    kind: Tokens::UnorderedListHyphen("- "),
+                    value: format!("{}{}", "- ".to_string(), unordered_list_text),
+                });
+                return;
             }
             '*' => {
                 let mut horizontal_rule_asterisk_level = 0;

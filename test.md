@@ -36,6 +36,10 @@ This is *italic*, and this is **bold**. You can also combine them: ***bold and i
    2. Subitem 2
 3. Third item
 
+- [ ] Task one
+- [ ] Task two
+- [ ] Task three
+
 ## Links
 
 This is a [link to OpenAI](https://www.openai.com).

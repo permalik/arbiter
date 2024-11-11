@@ -4,7 +4,7 @@
 - [ ] Line Breaks (two or more spaces at the end of a line)
 - [/] Unordered Lists (\*, +, or - at the start of a line)
 - [ ] Ordered Lists (1., 2., etc., at the start of a line)
-- [ ] Blockquotes (>)
+- [x] Blockquotes (>)
 - [ ] Code Blocks (triple backticks ```` or four-space indentation)
 - [x] Horizontal Rules (---, ***, or ___)
 - [ ] Tables (using | for columns in a table row)
