@@ -13,6 +13,6 @@ pub enum Tokens {
     HorizontalRuleAsterisk(&'static str),
     HorizontalRuleUnderscore(&'static str),
     EmptyLine(&'static str),
-    //LineBreak(&'static str),
+    LineBreak(&'static str),
     Text(String),
 }

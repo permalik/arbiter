@@ -1,7 +1,7 @@
 ### Elements that Start at the Beginning of a Line
 - [x] Headings (#, ##, etc.)
 - [ ] Paragraphs (new blocks separated by blank lines)
-- [ ] Line Breaks (two or more spaces at the end of a line)
+- [/] Line Breaks (two or more spaces at the end of a line)
 - [/] Unordered Lists (\*, +, or - at the start of a line)
 - [ ] Ordered Lists (1., 2., etc., at the start of a line)
 - [x] Blockquotes (>)
@@ -10,7 +10,7 @@
 - [ ] Tables (using | for columns in a table row)
 - [ ] Footnotes (e.g., [^1]: Definition text)
 - [ ] Definition Lists (e.g., Term, followed by a new line : Definition)
-- [ ] Task Lists (e.g., - [ ] Task item)
+- [/] Task Lists (e.g., - [ ] Task item)
 
 ### Elements that Start After an Indentation
 - [ ] Nested Unordered Lists (indented items under an unordered list)

@@ -36,9 +36,23 @@ This is *italic*, and this is **bold**. You can also combine them: ***bold and i
    2. Subitem 2
 3. Third item
 
+### Task List
+
 - [ ] Task one
 - [ ] Task two
 - [ ] Task three
+
+## Line Breaks
+
+  
+
+First Break  
+
+Second Break  
+
+## Single Space Line
+
+ 
 
 ## Links
 

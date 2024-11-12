@@ -261,12 +261,48 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                 }
             }
             _ => {
-                tokens.push(Token {
-                    line_number,
-                    name: "text".to_string(),
-                    kind: Tokens::Text(String::from(line)),
-                    value: String::from(line),
-                });
+                let mut is_line_break = false;
+                if line.len() >= 2 {
+                    let first_space_position = line.len() - 1;
+                    let second_space_position = line.len() - 2;
+                    if line.chars().nth(second_space_position) == Some(' ')
+                        && line.chars().nth(first_space_position) == Some(' ')
+                    {
+                        let line_break_literal = literals::LINE_BREAK;
+                        if let Tokens::LineBreak(line_break) = line_break_literal {
+                            assert_eq!(line_break, "  ");
+                        }
+
+                        is_line_break = true;
+                    }
+                }
+
+                if is_line_break {
+                    let line_text = String::from(line);
+                    let line_break_text_len = line_text.len() - 2;
+                    let line_break_text = &line_text[0..line_break_text_len];
+
+                    tokens.push(Token {
+                        line_number,
+                        name: "text".to_string(),
+                        kind: Tokens::Text(String::from(line_break_text)),
+                        value: String::from(line_break_text),
+                    });
+
+                    tokens.push(Token {
+                        line_number,
+                        name: "line_break".to_string(),
+                        kind: Tokens::LineBreak("  "),
+                        value: format!("  "),
+                    });
+                } else {
+                    tokens.push(Token {
+                        line_number,
+                        name: "text".to_string(),
+                        kind: Tokens::Text(String::from(line)),
+                        value: String::from(line),
+                    });
+                }
             }
         },
     }
