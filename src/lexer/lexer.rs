@@ -139,7 +139,6 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                     });
                     return;
                 }
-                // - [ ]
                 let mut tasklist_index = 0;
                 let mut is_tasklist = false;
                 if line.chars().nth(tasklist_index) == Some('-') {
