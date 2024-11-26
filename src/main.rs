@@ -1,7 +1,9 @@
 mod elements;
 mod lexer;
+mod parser;
 
-use lexer::lexer::parse;
+use lexer::lexer::lex;
+use parser::parser::parse;
 use std::env;
 use std::fs::File;
 use std::io::{self, BufRead, BufReader};
@@ -10,17 +12,20 @@ use std::path::Path;
 fn main() {
     let args: Vec<String> = env::args().collect();
     let file_path = parse_args(&args);
+    let mut tokens = Vec::new();
 
     match file_path {
         Some(path) => {
             if let Ok(lines) = read_lines(path.to_string()) {
                 for (line_number, line) in lines.flatten().enumerate() {
-                    parse(line_number + 1, &line);
+                    lex(line_number + 1, &line, &mut tokens);
                 }
             }
         }
         None => panic!("no file path provided"),
     }
+
+    parse(tokens);
 }
 
 fn parse_args(args: &[String]) -> Option<&str> {

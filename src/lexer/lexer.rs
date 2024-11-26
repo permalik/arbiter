@@ -1,29 +1,4 @@
-use crate::elements::{literals, tokens::Tokens};
-
-pub struct Token {
-    line_number: usize,
-    name: String,
-    kind: Tokens,
-    value: String,
-}
-
-pub fn parse(line_number: usize, line: &str) {
-    let mut tokens = Vec::new();
-    lex(line_number, line, &mut tokens);
-
-    for token in tokens {
-        match &token.kind {
-            Tokens::Text(content) => {
-                let _ = content.len();
-            }
-            _ => {}
-        }
-        println!(
-            "Token:: line_number: {:?}\nname: {:?}\nkind: {:?}\nvalue: {:?}\n",
-            token.line_number, token.name, token.kind, token.value,
-        );
-    }
-}
+use crate::elements::{literals, structs::Token, tokens::Tokens};
 
 pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
     match line.chars().nth(0) {
