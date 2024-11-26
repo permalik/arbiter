@@ -93,7 +93,7 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
             }
             '0'..='9' => {
                 if line.len() > 3
-                    && line.chars().nth(8) == Some('.')
+                    && line.chars().nth(1) == Some('.')
                     && line.chars().nth(2) == Some(' ')
                 {
                     let ordered_list_number_literal = literals::ORDERED_LIST_NUMBER;
@@ -104,14 +104,25 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                         re.is_match("8. ");
                     }
 
+                    let ordered_list_number = line.chars().nth(0);
+                    let ordered_list_number_token = format!("{:?}. ", ordered_list_number);
+                    let ordered_list_number_value = format!(
+                        "{:?}. {}",
+                        Some(ordered_list_number),
+                        ordered_list_number_token
+                    );
                     let line_text = String::from(line);
                     let ordered_list_text = &line_text[3..line_text.len()];
 
                     tokens.push(Token {
                         line_number,
                         name: "Ordered List".to_string(),
-                        kind: Tokens::OrderedListNumber("8. "),
-                        value: format!("8. {}", ordered_list_text),
+                        kind: Tokens::OrderedListNumber(ordered_list_number_token.clone()),
+                        value: format!(
+                            "{:?}. {}",
+                            Some(ordered_list_number),
+                            ordered_list_number_token
+                        ),
                     });
                 } else {
                     tokenize_text(line_number, line, tokens);
