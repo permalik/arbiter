@@ -105,24 +105,17 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                     }
 
                     let ordered_list_number = line.chars().nth(0);
-                    let ordered_list_number_token = format!("{:?}. ", ordered_list_number);
-                    let ordered_list_number_value = format!(
-                        "{:?}. {}",
-                        Some(ordered_list_number),
-                        ordered_list_number_token
-                    );
                     let line_text = String::from(line);
                     let ordered_list_text = &line_text[3..line_text.len()];
+                    let ordered_list_token = format!("{:?}. ", ordered_list_number);
+                    let ordered_list_number_value =
+                        format!("{:?}. {}", Some(ordered_list_number), ordered_list_text);
 
                     tokens.push(Token {
                         line_number,
                         name: "Ordered List".to_string(),
-                        kind: Tokens::OrderedListNumber(ordered_list_number_token.clone()),
-                        value: format!(
-                            "{:?}. {}",
-                            Some(ordered_list_number),
-                            ordered_list_number_token
-                        ),
+                        kind: Tokens::OrderedListNumber(string_to_static_str(ordered_list_token)),
+                        value: ordered_list_number_value,
                     });
                 } else {
                     tokenize_text(line_number, line, tokens);
@@ -322,4 +315,8 @@ fn tokenize_text(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
         kind: Tokens::Text(String::from(line)),
         value: String::from(line),
     });
+}
+
+fn string_to_static_str(s: String) -> &'static str {
+    Box::leak(s.into_boxed_str())
 }
