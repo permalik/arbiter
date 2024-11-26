@@ -1,15 +1,15 @@
 ## Block
-- [ ] Unordered Lists (\*, +, -)
-- [ ] Ordered Lists (1., 2., 3.)
-- [ ] Task Lists (- [ ] Task item)
+- [/] Unordered Lists (\*, +, -)
+- [/] Ordered Lists (1., 2., 3.)
+- [/] Task Lists (- [ ] Task item)
 - [ ] Definition Lists (Term, followed by a new line : Definition)
 - [ ] Blockquotes (>)
 - [ ] Code Blocks (triple-backspace, four-space indentation)
 - [ ] Tables (using | for columns in a table row)
 
 ## Line
-- [ ] Heading (#, ##, ###, ####, #####, ######)
-- [ ] Horizontal Rules (triple- hyphen, underscore, or asterisk)
+- [x] Heading (#, ##, ###, ####, #####, ######)
+- [/] Horizontal Rules (triple- hyphen, underscore, or asterisk)
 - [ ] Footnotes ([^1]: Definition text)
 
 ## Inline
@@ -25,5 +25,6 @@
 - [ ] Comments (<!-- comment -->)
 
 ## Separators
-- [ ] Line Breaks (two or more spaces at the end of a line)
 - [ ] Paragraph (line-separated text)
+- [ ] Line Breaks (two or more spaces at the end of a line)
+- [x] Empty Line

@@ -91,9 +91,9 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                     });
                 }
             }
-            '1' => {
+            '0'..='9' => {
                 if line.len() > 3
-                    && line.chars().nth(1) == Some('.')
+                    && line.chars().nth(8) == Some('.')
                     && line.chars().nth(2) == Some(' ')
                 {
                     let ordered_list_number_literal = literals::ORDERED_LIST_NUMBER;
@@ -101,7 +101,7 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                         ordered_list_number_literal
                     {
                         let re = Regex::new(ordered_list_number).expect("invalid regex");
-                        re.is_match("1. ");
+                        re.is_match("8. ");
                     }
 
                     let line_text = String::from(line);
@@ -110,9 +110,11 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                     tokens.push(Token {
                         line_number,
                         name: "Ordered List".to_string(),
-                        kind: Tokens::OrderedListNumber("1. "),
-                        value: format!("1. {}", ordered_list_text),
+                        kind: Tokens::OrderedListNumber("8. "),
+                        value: format!("8. {}", ordered_list_text),
                     });
+                } else {
+                    tokenize_text(line_number, line, tokens);
                 }
             }
             '-' => {
@@ -295,14 +297,18 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                         value: format!("  "),
                     });
                 } else {
-                    tokens.push(Token {
-                        line_number,
-                        name: "text".to_string(),
-                        kind: Tokens::Text(String::from(line)),
-                        value: String::from(line),
-                    });
+                    tokenize_text(line_number, line, tokens);
                 }
             }
         },
     }
+}
+
+fn tokenize_text(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
+    tokens.push(Token {
+        line_number,
+        name: "text".to_string(),
+        kind: Tokens::Text(String::from(line)),
+        value: String::from(line),
+    });
 }
