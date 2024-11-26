@@ -1,4 +1,5 @@
 use crate::elements::{literals, structs::Token, tokens::Tokens};
+use regex::Regex;
 
 pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
     match line.chars().nth(0) {
@@ -87,6 +88,30 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                         name: format!("h{}", heading_level),
                         kind: token_kind,
                         value: format!("{} {}", "#".repeat(heading_level), heading_text),
+                    });
+                }
+            }
+            '1' => {
+                if line.len() > 3
+                    && line.chars().nth(1) == Some('.')
+                    && line.chars().nth(2) == Some(' ')
+                {
+                    let ordered_list_number_literal = literals::ORDERED_LIST_NUMBER;
+                    if let Tokens::OrderedListNumber(ordered_list_number) =
+                        ordered_list_number_literal
+                    {
+                        let re = Regex::new(ordered_list_number).expect("invalid regex");
+                        re.is_match("1. ");
+                    }
+
+                    let line_text = String::from(line);
+                    let ordered_list_text = &line_text[3..line_text.len()];
+
+                    tokens.push(Token {
+                        line_number,
+                        name: "Ordered List".to_string(),
+                        kind: Tokens::OrderedListNumber("1. "),
+                        value: format!("1. {}", ordered_list_text),
                     });
                 }
             }
