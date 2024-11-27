@@ -118,7 +118,7 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                         value: ordered_list_number_value,
                     });
                 } else {
-                    tokenize_text(line_number, line, tokens);
+                    lex_text(line_number, line, tokens);
                 }
             }
             '-' => {
@@ -301,22 +301,18 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                         value: format!("  "),
                     });
                 } else {
-                    tokenize_text(line_number, line, tokens);
+                    lex_text(line_number, line, tokens);
                 }
             }
         },
     }
 }
 
-fn tokenize_text(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
+fn lex_text(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
     tokens.push(Token {
         line_number,
         name: "text".to_string(),
         kind: Tokens::Text(String::from(line)),
         value: String::from(line),
     });
-}
-
-fn string_to_static_str(s: String) -> &'static str {
-    Box::leak(s.into_boxed_str())
 }
