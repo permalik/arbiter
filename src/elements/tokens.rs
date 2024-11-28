@@ -9,6 +9,7 @@ pub enum Tokens {
     OrderedListNumber(&'static str),
     UnorderedListHyphen(&'static str),
     Tasklist(&'static str),
+    DefinitionList(&'static str),
     Blockquote(&'static str),
     HorizontalRuleHyphen(&'static str),
     HorizontalRuleAsterisk(&'static str),

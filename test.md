@@ -13,6 +13,11 @@ ___
 
 This is *italic*, and this is **bold**. You can also combine them: ***bold and italic***.
 
+## Definition List
+
+Term
+: Definition of term...
+
 ## Blockquotes
 
 > This is a blockquote.
@@ -30,7 +35,7 @@ This is *italic*, and this is **bold**. You can also combine them: ***bold and i
 
 ### Ordered List
 
-8. 
+8.
 
 1. First item
 2. Second item
@@ -46,15 +51,15 @@ This is *italic*, and this is **bold**. You can also combine them: ***bold and i
 
 ## Line Breaks
 
-  
 
-First Break  
 
-Second Break  
+First Break
+
+Second Break
 
 ## Single Space Line
 
- 
+
 
 ## Links
 
@@ -64,7 +69,7 @@ This is a [link to OpenAI](https://www.openai.com).
 
 ![OpenAI Logo](https://openai.com/favicon.ico)
 
-## Code
+
 
 Inline code: `console.log("Hello, world!");`
 

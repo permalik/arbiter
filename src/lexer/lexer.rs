@@ -249,6 +249,21 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                     });
                 }
             }
+            ':' => {
+                if line.chars().nth(1) == Some(' ') {
+                    let definition_list_literal = literals::DEFINITION_LIST;
+                    if let Tokens::DefinitionList(definition_list) = definition_list_literal {
+                        assert_eq!(definition_list, ": ");
+                    }
+
+                    tokens.push(Token {
+                        line_number,
+                        name: "definition_list".to_string(),
+                        kind: Tokens::DefinitionList(": "),
+                        value: format!(": "),
+                    });
+                }
+            }
             '>' => {
                 let blockquote_level = 0;
                 if line.chars().nth(blockquote_level + 1) == Some(' ') {
