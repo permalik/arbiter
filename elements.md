@@ -2,9 +2,9 @@
 - [/] Unordered Lists (\*, +, -)
 - [/] Ordered Lists (1., 2., 3.)
 - [/] Task Lists (- [ ] Task item)
-- [ ] Definition Lists (Term, followed by a new line : Definition)
-- [ ] Blockquotes (>)
-- [ ] Code Blocks (triple-backspace, four-space indentation)
+- [x] Definition Lists (Term, followed by a new line : Definition)
+- [/] Blockquotes (>)
+- [ ] Code Blocks (triple-backtick)
 - [ ] Tables (using | for columns in a table row)
 
 ## Line

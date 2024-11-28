@@ -75,6 +75,10 @@ Inline code: `console.log("Hello, world!");`
 
 ### Code Block
 
+```
+standard code block
+```
+
 ```javascript
 function greet() {
     console.log("Hello, world!");

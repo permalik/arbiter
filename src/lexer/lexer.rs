@@ -146,20 +146,20 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                     });
                     return;
                 }
-                let mut tasklist_index = 0;
-                let mut is_tasklist = false;
-                if line.chars().nth(tasklist_index) == Some('-') {
-                    tasklist_index += 1;
-                    if line.chars().nth(tasklist_index) == Some(' ') {
-                        tasklist_index += 1;
-                        if line.chars().nth(tasklist_index) == Some('[') {
-                            tasklist_index += 1;
-                            if line.chars().nth(tasklist_index) == Some(' ') {
-                                tasklist_index += 1;
-                                if line.chars().nth(tasklist_index) == Some(']') {
-                                    tasklist_index += 1;
-                                    if line.chars().nth(tasklist_index) == Some(' ') {
-                                        is_tasklist = true;
+                let mut task_list_index = 0;
+                let mut is_task_list = false;
+                if line.chars().nth(task_list_index) == Some('-') {
+                    task_list_index += 1;
+                    if line.chars().nth(task_list_index) == Some(' ') {
+                        task_list_index += 1;
+                        if line.chars().nth(task_list_index) == Some('[') {
+                            task_list_index += 1;
+                            if line.chars().nth(task_list_index) == Some(' ') {
+                                task_list_index += 1;
+                                if line.chars().nth(task_list_index) == Some(']') {
+                                    task_list_index += 1;
+                                    if line.chars().nth(task_list_index) == Some(' ') {
+                                        is_task_list = true;
                                     }
                                 }
                             }
@@ -167,20 +167,20 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                     }
                 }
 
-                if is_tasklist {
-                    let tasklist_literal = literals::TASKLIST;
-                    if let Tokens::Tasklist(tasklist) = tasklist_literal {
-                        assert_eq!(tasklist, "- [ ] ");
+                if is_task_list {
+                    let task_list_literal = literals::TASK_LIST;
+                    if let Tokens::TaskList(task_list) = task_list_literal {
+                        assert_eq!(task_list, "- [ ] ");
                     }
 
                     let line_text = String::from(line);
-                    let tasklist_text = &line_text[6..line_text.len()];
+                    let task_list_text = &line_text[6..line_text.len()];
 
                     tokens.push(Token {
                         line_number,
-                        name: "tasklist".to_string(),
-                        kind: Tokens::Tasklist("- [ ] "),
-                        value: format!("{}{}", "- [ ] ".to_string(), tasklist_text),
+                        name: "task_list".to_string(),
+                        kind: Tokens::TaskList("- [ ] "),
+                        value: format!("{}{}", "- [ ] ".to_string(), task_list_text),
                     });
                     return;
                 }
@@ -280,6 +280,29 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                         value: format!("> "),
                     });
                 }
+            }
+            '`' => {
+                const CODE_BLOCK_FENCE_SIZE: usize = 3;
+                let mut code_block_level: usize = 0;
+                while code_block_level < CODE_BLOCK_FENCE_SIZE
+                    && line.chars().nth(code_block_level) == Some('`')
+                {
+                    code_block_level += 1;
+                }
+
+                if line.chars().nth(code_block_level + 1) == Some(' ') {
+                    let code_block_literal = literals::CODE_BLOCK;
+                    if let Tokens::CodeBlock(code_block) = code_block_literal {
+                        assert_eq!(code_block, "``` ");
+                    }
+                }
+
+                tokens.push(Token {
+                    line_number,
+                    name: "code_block".to_string(),
+                    kind: Tokens::CodeBlock("``` "),
+                    value: format!("``` "),
+                });
             }
             _ => {
                 let mut is_line_break = false;
