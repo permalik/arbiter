@@ -1,6 +1,7 @@
 mod elements;
 mod lexer;
 mod parser;
+mod utils;
 
 use lexer::lexer::lex;
 use parser::parser::parse;

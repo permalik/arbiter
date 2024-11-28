@@ -1,4 +1,5 @@
 use crate::elements::{literals, structs::Token, tokens::Tokens};
+use crate::utils::utils::string_to_static_str;
 use regex::Regex;
 
 pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
