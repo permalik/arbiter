@@ -290,51 +290,54 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                     code_block_level += 1;
                 }
 
-                if line.chars().nth(code_block_level + 1) == Some(' ') {
+                println!("cbl: {}", code_block_level);
+                if line.chars().nth(code_block_level + 1) == Some('m') {
+                    println!("first level: mL {}", code_block_level);
+                    code_block_level += 1;
+                }
+
+                // const MARKDOWN_FENCE_SIZE: usize = 5;
+                // let mut markdown_block_level: usize = 3;
+                let mut is_markdown = false;
+                // println!("first level: mL {}", markdown_block_level);
+                // if line.chars().nth(markdown_block_level + 1) == Some('m') {
+                //     println!("first level: mL {}", markdown_block_level);
+                //     markdown_block_level += 1;
+                // }
+                // if line.chars().nth(markdown_block_level + 1) == Some('d') {
+                //     println!("second level: ML {}", markdown_block_level);
+                //     markdown_block_level += 1;
+                //     println!("second level: ML {}", markdown_block_level);
+                // }
+                // if markdown_block_level == MARKDOWN_FENCE_SIZE {
+                //     println!("is md");
+                //     is_markdown = true;
+                // }
+
+                if is_markdown {
+                    let markdown_block_literal = literals::CODE_BLOCK_MARKDOWN;
+                    if let Tokens::CodeBlockMarkdown(markdown_block) = markdown_block_literal {
+                        assert_eq!(markdown_block, "```md");
+                    }
+
+                    tokens.push(Token {
+                        line_number,
+                        name: "markdown_block".to_string(),
+                        kind: Tokens::CodeBlock("```md"),
+                        value: format!("```md"),
+                    });
+                } else {
                     let code_block_literal = literals::CODE_BLOCK;
                     if let Tokens::CodeBlock(code_block) = code_block_literal {
-                        assert_eq!(code_block, "``` ");
+                        assert_eq!(code_block, "```");
                     }
 
                     tokens.push(Token {
                         line_number,
                         name: "code_block".to_string(),
-                        kind: Tokens::CodeBlock("``` "),
-                        value: format!("``` "),
+                        kind: Tokens::CodeBlock("```"),
+                        value: format!("```"),
                     });
-                }
-
-                const MARKDOWN_FENCE_SIZE: usize = 5;
-                let mut markdown_level: usize = 3;
-                let mut is_markdown = false;
-                if markdown_level < MARKDOWN_FENCE_SIZE
-                    && line.chars().nth(markdown_level + 1) == Some('m')
-                {
-                    markdown_level += 1;
-                }
-                if markdown_level < MARKDOWN_FENCE_SIZE
-                    && line.chars().nth(markdown_level + 1) == Some('d')
-                {
-                    markdown_level += 1;
-                }
-                if markdown_level == MARKDOWN_FENCE_SIZE {
-                    is_markdown = !is_markdown;
-                }
-
-                if is_markdown {
-                    if line.chars().nth(markdown_level + 1) == Some(' ') {
-                        let markdown_block_literal = literals::CODE_BLOCK_MARKDOWN;
-                        if let Tokens::CodeBlockMarkdown(markdown_block) = markdown_block_literal {
-                            assert_eq!(markdown_block, "```md ");
-                        }
-
-                        tokens.push(Token {
-                            line_number,
-                            name: "markdown_block".to_string(),
-                            kind: Tokens::CodeBlock("```md "),
-                            value: format!("```md "),
-                        });
-                    }
                 }
             }
             _ => {
