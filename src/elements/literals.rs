@@ -12,6 +12,7 @@ pub const TASK_LIST: Tokens = Tokens::TaskList("- [ ] ");
 pub const DEFINITION_LIST: Tokens = Tokens::DefinitionList(": ");
 pub const BLOCKQUOTE: Tokens = Tokens::Blockquote("> ");
 pub const CODE_BLOCK: Tokens = Tokens::CodeBlock("```");
+pub const CODE_BLOCK_MARKDOWN: Tokens = Tokens::CodeBlockMarkdown("```md ");
 pub const HORIZONTAL_RULE_HYPHEN: Tokens = Tokens::HorizontalRuleHyphen("---");
 pub const HORIZONTAL_RULE_ASTERISK: Tokens = Tokens::HorizontalRuleAsterisk("***");
 pub const HORIZONTAL_RULE_UNDERSCORE: Tokens = Tokens::HorizontalRuleUnderscore("___");

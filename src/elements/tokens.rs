@@ -12,6 +12,7 @@ pub enum Tokens {
     DefinitionList(&'static str),
     Blockquote(&'static str),
     CodeBlock(&'static str),
+    CodeBlockMarkdown(&'static str),
     HorizontalRuleHyphen(&'static str),
     HorizontalRuleAsterisk(&'static str),
     HorizontalRuleUnderscore(&'static str),
