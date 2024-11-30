@@ -83,6 +83,13 @@ standard code block
 markdown code block
 ```
 
+```c
+int main(void) {
+    printf("execute program...");
+    return 0;
+}
+```
+
 ```javascript
 function greet() {
     console.log("Hello, world!");

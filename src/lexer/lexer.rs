@@ -282,6 +282,19 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                 }
             }
             '`' => {
+                let c_block_literal = literals::C_BLOCK;
+                if let Tokens::CBlock(c_block) = c_block_literal {
+                    if line == c_block {
+                        tokens.push(Token {
+                            line_number,
+                            name: "c_block".to_string(),
+                            kind: Tokens::CBlock(c_block),
+                            value: c_block.to_string(),
+                        });
+                        return;
+                    }
+                }
+
                 let markdown_block_literal = literals::CODE_BLOCK_MARKDOWN;
                 if let Tokens::CodeBlockMarkdown(markdown_block) = markdown_block_literal {
                     if line == markdown_block {
