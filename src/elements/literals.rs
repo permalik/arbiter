@@ -2,10 +2,10 @@ use crate::elements::tokens::Tokens;
 
 pub const HEADING_ONE: Tokens = Tokens::HeadingOne("# ");
 pub const HEADING_TWO: Tokens = Tokens::HeadingTwo("## ");
-pub const HEADING_THREE: Tokens = Tokens::HeadingOne("### ");
-pub const HEADING_FOUR: Tokens = Tokens::HeadingOne("#### ");
-pub const HEADING_FIVE: Tokens = Tokens::HeadingTwo("##### ");
-pub const HEADING_SIX: Tokens = Tokens::HeadingTwo("###### ");
+pub const HEADING_THREE: Tokens = Tokens::HeadingThree("### ");
+pub const HEADING_FOUR: Tokens = Tokens::HeadingFour("#### ");
+pub const HEADING_FIVE: Tokens = Tokens::HeadingFive("##### ");
+pub const HEADING_SIX: Tokens = Tokens::HeadingSix("###### ");
 pub const ORDERED_LIST_NUMBER: Tokens = Tokens::OrderedListNumber(r"^\d+\.\s");
 pub const UNORDERED_LIST_HYPHEN: Tokens = Tokens::UnorderedListHyphen("- ");
 pub const TASK_LIST: Tokens = Tokens::TaskList("- [ ] ");

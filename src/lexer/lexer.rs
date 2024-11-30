@@ -19,67 +19,36 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
         }
         Some(c) => match c {
             '#' => {
-                let mut heading_level = 1;
+                fn verify_heading(level: usize, literal: Tokens) {
+                    let expected = format!("{} ", &"#".repeat(level));
+                    match literal {
+                        Tokens::HeadingOne(h) => assert_eq!(h, expected),
+                        Tokens::HeadingTwo(h) => assert_eq!(h, expected),
+                        Tokens::HeadingThree(h) => assert_eq!(h, expected),
+                        Tokens::HeadingFour(h) => assert_eq!(h, expected),
+                        Tokens::HeadingFive(h) => assert_eq!(h, expected),
+                        Tokens::HeadingSix(h) => assert_eq!(h, expected),
+                        _ => unreachable!(),
+                    }
+                }
 
+                let mut heading_level = 1;
                 while heading_level < line.len() && line.chars().nth(heading_level) == Some('#') {
                     heading_level += 1;
                 }
 
                 if heading_level <= 6 {
-                    let token_kind = match heading_level {
-                        1 => {
-                            let heading_one_literal = literals::HEADING_ONE;
-                            if let Tokens::HeadingOne(heading_one) = heading_one_literal {
-                                assert_eq!(heading_one, format!("{} ", &"#".repeat(heading_level)));
-                            }
-                            Tokens::HeadingOne("# ")
-                        }
-                        2 => {
-                            let heading_two_literal = literals::HEADING_TWO;
-                            if let Tokens::HeadingTwo(heading_two) = heading_two_literal {
-                                assert_eq!(heading_two, format!("{} ", &"#".repeat(heading_level)));
-                            }
-                            Tokens::HeadingTwo("## ")
-                        }
-                        3 => {
-                            let heading_three_literal = literals::HEADING_THREE;
-                            if let Tokens::HeadingThree(heading_three) = heading_three_literal {
-                                assert_eq!(
-                                    heading_three,
-                                    format!("{} ", &"#".repeat(heading_level))
-                                );
-                            }
-                            Tokens::HeadingThree("### ")
-                        }
-                        4 => {
-                            let heading_four_literal = literals::HEADING_FOUR;
-                            if let Tokens::HeadingFour(heading_four) = heading_four_literal {
-                                assert_eq!(
-                                    heading_four,
-                                    format!("{} ", &"#".repeat(heading_level))
-                                );
-                            }
-                            Tokens::HeadingFour("#### ")
-                        }
-                        5 => {
-                            let heading_five_literal = literals::HEADING_FIVE;
-                            if let Tokens::HeadingFive(heading_five) = heading_five_literal {
-                                assert_eq!(
-                                    heading_five,
-                                    format!("{} ", &"#".repeat(heading_level))
-                                );
-                            }
-                            Tokens::HeadingFive("##### ")
-                        }
-                        6 => {
-                            let heading_six_literal = literals::HEADING_SIX;
-                            if let Tokens::HeadingSix(heading_six) = heading_six_literal {
-                                assert_eq!(heading_six, format!("{} ", &"#".repeat(heading_level)));
-                            }
-                            Tokens::HeadingSix("###### ")
-                        }
+                    let (token_kind, literal) = match heading_level {
+                        1 => (Tokens::HeadingOne("# "), literals::HEADING_ONE),
+                        2 => (Tokens::HeadingTwo("## "), literals::HEADING_TWO),
+                        3 => (Tokens::HeadingThree("### "), literals::HEADING_THREE),
+                        4 => (Tokens::HeadingFour("#### "), literals::HEADING_FOUR),
+                        5 => (Tokens::HeadingFive("##### "), literals::HEADING_FIVE),
+                        6 => (Tokens::HeadingSix("######"), literals::HEADING_SIX),
                         _ => unreachable!(),
                     };
+
+                    verify_heading(heading_level, literal);
 
                     let heading_text = lex_heading_text(line, heading_level);
 
