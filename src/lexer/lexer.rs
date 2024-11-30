@@ -81,8 +81,7 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                         _ => unreachable!(),
                     };
 
-                    let line_text = String::from(line);
-                    let heading_text = &line_text[(heading_level + 1)..line_text.len()];
+                    let heading_text = lex_heading_text(line, heading_level);
 
                     tokens.push(Token {
                         line_number,
@@ -372,6 +371,10 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
             }
         },
     }
+}
+
+fn lex_heading_text(line: &str, heading_level: usize) -> &str {
+    &line[heading_level..]
 }
 
 fn lex_text(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
