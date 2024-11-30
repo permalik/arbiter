@@ -282,62 +282,40 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                 }
             }
             '`' => {
-                const CODE_BLOCK_FENCE_SIZE: usize = 3;
-                let mut code_block_level: usize = 0;
-                while code_block_level < CODE_BLOCK_FENCE_SIZE
-                    && line.chars().nth(code_block_level) == Some('`')
-                {
-                    code_block_level += 1;
+                let markdown_block_literal = literals::CODE_BLOCK_MARKDOWN;
+                if let Tokens::CodeBlockMarkdown(markdown_block) = markdown_block_literal {
+                    if line == markdown_block {
+                        tokens.push(Token {
+                            line_number,
+                            name: "markdown_block".to_string(),
+                            kind: Tokens::CodeBlock(markdown_block),
+                            value: markdown_block.to_string(),
+                        });
+                        return;
+                    }
                 }
 
-                println!("cbl: {}", code_block_level);
-                if line.chars().nth(code_block_level + 1) == Some('m') {
-                    println!("first level: mL {}", code_block_level);
-                    code_block_level += 1;
+                let code_block_literal = literals::CODE_BLOCK;
+                if let Tokens::CodeBlock(code_block) = code_block_literal {
+                    if line == code_block {
+                        tokens.push(Token {
+                            line_number,
+                            name: "code_block".to_string(),
+                            kind: Tokens::CodeBlock(code_block),
+                            value: code_block.to_string(),
+                        });
+                        return;
+                    }
                 }
 
-                // const MARKDOWN_FENCE_SIZE: usize = 5;
-                // let mut markdown_block_level: usize = 3;
-                let mut is_markdown = false;
-                // println!("first level: mL {}", markdown_block_level);
-                // if line.chars().nth(markdown_block_level + 1) == Some('m') {
-                //     println!("first level: mL {}", markdown_block_level);
-                //     markdown_block_level += 1;
-                // }
-                // if line.chars().nth(markdown_block_level + 1) == Some('d') {
-                //     println!("second level: ML {}", markdown_block_level);
-                //     markdown_block_level += 1;
-                //     println!("second level: ML {}", markdown_block_level);
-                // }
-                // if markdown_block_level == MARKDOWN_FENCE_SIZE {
-                //     println!("is md");
-                //     is_markdown = true;
-                // }
-
-                if is_markdown {
-                    let markdown_block_literal = literals::CODE_BLOCK_MARKDOWN;
-                    if let Tokens::CodeBlockMarkdown(markdown_block) = markdown_block_literal {
-                        assert_eq!(markdown_block, "```md");
-                    }
-
+                if line.starts_with("```") {
                     tokens.push(Token {
                         line_number,
-                        name: "markdown_block".to_string(),
-                        kind: Tokens::CodeBlock("```md"),
-                        value: format!("```md"),
-                    });
-                } else {
-                    let code_block_literal = literals::CODE_BLOCK;
-                    if let Tokens::CodeBlock(code_block) = code_block_literal {
-                        assert_eq!(code_block, "```");
-                    }
-
-                    tokens.push(Token {
-                        line_number,
-                        name: "code_block".to_string(),
+                        name: "general_code_block".to_string(),
                         kind: Tokens::CodeBlock("```"),
-                        value: format!("```"),
+                        value: line.to_string(),
                     });
+                    return;
                 }
             }
             _ => {
