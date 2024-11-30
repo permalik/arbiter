@@ -295,13 +295,13 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                     }
                 }
 
-                let markdown_block_literal = literals::CODE_BLOCK_MARKDOWN;
-                if let Tokens::CodeBlockMarkdown(markdown_block) = markdown_block_literal {
+                let markdown_block_literal = literals::MARKDOWN_BLOCK;
+                if let Tokens::MarkdownBlock(markdown_block) = markdown_block_literal {
                     if line == markdown_block {
                         tokens.push(Token {
                             line_number,
                             name: "markdown_block".to_string(),
-                            kind: Tokens::CodeBlock(markdown_block),
+                            kind: Tokens::MarkdownBlock(markdown_block),
                             value: markdown_block.to_string(),
                         });
                         return;
