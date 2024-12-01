@@ -7,15 +7,15 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
         None => {
             let empty_line_literal = literals::EMPTY_LINE;
             if let Tokens::EmptyLine(empty_line) = empty_line_literal {
-                assert_eq!(empty_line, "");
+                if line == empty_line {
+                    tokens.push(Token {
+                        line_number,
+                        name: "empty_line".to_string(),
+                        kind: Tokens::EmptyLine(""),
+                        value: "".to_string(),
+                    });
+                }
             }
-
-            tokens.push(Token {
-                line_number,
-                name: "empty_line".to_string(),
-                kind: Tokens::EmptyLine(""),
-                value: "".to_string(),
-            });
         }
         Some(c) => match c {
             '#' => {
