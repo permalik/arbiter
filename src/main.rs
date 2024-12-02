@@ -18,8 +18,9 @@ fn main() {
     match file_path {
         Some(path) => {
             if let Ok(lines) = read_lines(path.to_string()) {
+                let mut byte_offset = 0;
                 for (line_number, line) in lines.flatten().enumerate() {
-                    lex(line_number + 1, &line, &mut tokens);
+                    lex(line_number + 1, &line, &mut byte_offset, &mut tokens);
                 }
             }
         }

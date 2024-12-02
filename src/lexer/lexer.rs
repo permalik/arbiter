@@ -1,6 +1,6 @@
 use crate::elements::{literals, structs::Token, tokens::Tokens};
 
-pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
+pub fn lex(line_number: usize, line: &str, byte_offset: &mut usize, tokens: &mut Vec<Token>) {
     if line.is_empty() {
         let empty_line_literal = literals::EMPTY_LINE;
         if let Tokens::EmptyLine(empty_line) = empty_line_literal {
@@ -10,14 +10,13 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                     name: "empty_line".to_string(),
                     kind: Tokens::EmptyLine(""),
                     value: "".to_string(),
-                    line_byte_offset: 0,
+                    line_byte_offset: *byte_offset,
                 });
             }
         }
     }
-    let mut byte_offset = 0;
     for (i, c) in line.chars().enumerate() {
-        byte_offset += c.len_utf8();
+        *byte_offset += c.len_utf8();
         if i == 0 {
             match c {
                 '#' => {
@@ -60,7 +59,7 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                             name: format!("h{}", heading_level),
                             kind: token_kind,
                             value: format!("{} {}", "#".repeat(heading_level), heading_text),
-                            line_byte_offset: byte_offset,
+                            line_byte_offset: *byte_offset,
                         });
                         return;
                     }
@@ -78,12 +77,12 @@ fn lex_element_text(line: &str, heading_level: usize) -> &str {
     &line[heading_level..]
 }
 
-fn lex_text(line_number: usize, c: char, offset: usize, tokens: &mut Vec<Token>) {
+fn lex_text(line_number: usize, c: char, offset: &mut usize, tokens: &mut Vec<Token>) {
     tokens.push(Token {
         line_number,
         name: "text".to_string(),
         kind: Tokens::Text(String::from(c)),
         value: String::from(c),
-        line_byte_offset: offset,
+        line_byte_offset: *offset,
     });
 }
