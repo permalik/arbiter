@@ -9,8 +9,8 @@ pub fn parse(tokens: Vec<Token>) {
             _ => {}
         }
         println!(
-            "Token:: line_number: {:?}\nname: {:?}\nkind: {:?}\nvalue: {:?}\n",
-            token.line_number, token.name, token.kind, token.value,
+            "Token:: line_number: {:?}\nname: {:?}\nkind: {:?}\nvalue: {:?}\nline_byte_offset: {:?}\n",
+            token.line_number, token.name, token.kind, token.value, token.line_byte_offset,
         );
     }
 }

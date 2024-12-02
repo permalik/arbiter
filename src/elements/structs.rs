@@ -5,4 +5,5 @@ pub struct Token {
     pub name: String,
     pub kind: Tokens,
     pub value: String,
+    pub line_byte_offset: usize,
 }
