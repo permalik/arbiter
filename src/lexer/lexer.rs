@@ -50,7 +50,7 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
 
                     verify_heading(heading_level, literal);
 
-                    let heading_text = lex_heading_text(line, heading_level);
+                    let heading_text = lex_element_text(line, heading_level);
 
                     tokens.push(Token {
                         line_number,
@@ -74,17 +74,16 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
                     }
 
                     let ordered_list_number = line.chars().nth(0);
-                    let line_text = String::from(line);
-                    let ordered_list_text = &line_text[3..line_text.len()];
-                    let ordered_list_token = format!("{:?}. ", ordered_list_number);
-                    let ordered_list_number_value =
-                        format!("{:?}. {}", Some(ordered_list_number), ordered_list_text);
+                    let ordered_list_text = lex_element_text(line, 3);
 
                     tokens.push(Token {
                         line_number,
                         name: "Ordered List".to_string(),
-                        kind: Tokens::OrderedListNumber(string_to_static_str(ordered_list_token)),
-                        value: ordered_list_number_value,
+                        kind: Tokens::OrderedListNumber(string_to_static_str(format!(
+                            "{}. ",
+                            ordered_list_number.unwrap()
+                        ))),
+                        value: format!("{}. {}", ordered_list_number.unwrap(), ordered_list_text),
                     });
                 } else {
                     lex_text(line_number, line, tokens);
@@ -342,7 +341,7 @@ pub fn lex(line_number: usize, line: &str, tokens: &mut Vec<Token>) {
     }
 }
 
-fn lex_heading_text(line: &str, heading_level: usize) -> &str {
+fn lex_element_text(line: &str, heading_level: usize) -> &str {
     &line[heading_level..]
 }
 
